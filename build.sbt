@@ -1,11 +1,11 @@
-import android.Keys._
 import android.Dependencies.{LibraryDependency, aar}
+import android.Keys._
 
 android.Plugin.androidBuild
 
 platformTarget in Android := "android-19"
 
-name := "macroid-starter"
+name := "android-on-scala-playground"
 
 scalaVersion := "2.11.1"
 
@@ -27,18 +27,13 @@ libraryDependencies ++= Seq(
   aar("org.macroid" %% "macroid" % "2.0.0-M3"),
   aar("com.google.android.gms" % "play-services" % "4.0.30"),
   aar("com.android.support" % "support-v4" % "20.0.0"),
-  "com.stackmob" % "newman_2.10" % "1.3.5",
+  "com.squareup.retrofit" % "retrofit" % "1.9.0",
   compilerPlugin("org.brianmckenna" %% "wartremover" % "0.10")
 )
 
-proguardScala in Android := false
+proguardScala in Android := true
 
 proguardOptions in Android ++= Seq(
   "-ignorewarnings",
   "-keep class scala.Dynamic"
-//  "-keepattributes *Annotation*",
-//  "-keep class retrofit.** { *; }",
-//  "-keepclasseswithmembers class * {",
-//  "@retrofit.http.* <methods>; }",
-//  "-keepattributes Signature"
 )

@@ -16,7 +16,7 @@
 # "proguard-android-optimize.txt" file instead of this one from your
 # project.properties file.
 
--keepattributes *Annotation*
+-keepattributes *Annotation*,Signature
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
 
@@ -63,3 +63,6 @@
 
 -ignorewarnings
 -keep class scala.Dynamic
+
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
