@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.macroid.starter"
+    android:versionCode="0"
+    android:versionName="0.1">
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19"/>
+
+    <application
+        android:label="Macroid Starter"
+        android:icon="@drawable/android:star_big_on">
+
+        <activity
+          android:label="Macroid Starter"
+          android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!--<uses-library android:name="scala-2.11.1" android:required="true"/>-->
+        <!--<uses-library android:name="scala-actors-2.11.1" android:required="true"/>-->
+        <!--<uses-library android:name="scala-reflect-2.11.1" android:required="true"/>-->
+        <!--<uses-library android:name="scala.collection-2.11.1" android:required="true"/>-->
+        <!--<uses-library android:name="scala.collection.immutable-2.11.1" android:required="true"/>-->
+        <!--<uses-library android:name="scala.collection.mutable-2.11.1" android:required="true"/>-->
+
+    </application>
+</manifest>
