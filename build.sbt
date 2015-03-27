@@ -1,13 +1,13 @@
-import android.Dependencies.{LibraryDependency, aar}
+import android.Dependencies.aar
 import android.Keys._
 
 android.Plugin.androidBuild
 
-platformTarget in Android := "android-19"
+platformTarget in Android := "android-22"
 
 name := "android-on-scala-playground"
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.6"
 
 run <<= run in Android
 
@@ -25,15 +25,20 @@ scalacOptions in (Compile, compile) ++= Seq(
 
 libraryDependencies ++= Seq(
   aar("org.macroid" %% "macroid" % "2.0.0-M3"),
-  aar("com.google.android.gms" % "play-services" % "4.0.30"),
   aar("com.android.support" % "support-v4" % "20.0.0"),
   "com.squareup.retrofit" % "retrofit" % "1.9.0",
   compilerPlugin("org.brianmckenna" %% "wartremover" % "0.10")
 )
 
-proguardScala in Android := true
+useProguard in Android := true
 
 proguardOptions in Android ++= Seq(
   "-ignorewarnings",
-  "-keep class scala.Dynamic"
+  "-keep class scala.Dynamic",
+  "-keepattributes InnerClasses",
+  "-dontwarn retrofit.**",
+  "-keepattributes *Annotation*",
+  "-keep class retrofit.** { *; }",
+  "-keepclasseswithmembers class * { @retrofit.http.* <methods>; }",
+  "-keepattributes Signature"
 )

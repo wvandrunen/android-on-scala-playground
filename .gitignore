@@ -1,0 +1,4 @@
+proguard-sbt.txt
+target/
+.idea
+.idea_modules

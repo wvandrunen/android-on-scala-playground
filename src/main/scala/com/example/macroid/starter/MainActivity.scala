@@ -2,19 +2,18 @@ package com.example.macroid.starter
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.ViewGroup.LayoutParams._
-import android.view.{Gravity, View}
-import android.widget.{Button, LinearLayout, TextView}
-import com.example.macroid.starter.RestAdapterFactory.HttpBinService
+import android.view.{Window, Gravity}
+import android.widget._
 import retrofit.RestAdapter
 import retrofit.http.GET
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 // import macroid stuff
 import macroid.FullDsl._
 import macroid._
 import macroid.contrib._
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 // define our helpers in a mixable trait
 trait Styles {
@@ -40,52 +39,45 @@ object RestAdapterFactory {
       .setEndpoint("https://httpbin.org")
       .build()
 
-    val clazz = classOf[HttpBinService]
-
-    restAdapter.create[HttpBinService](clazz)
+    restAdapter.create[HttpBinService](classOf[HttpBinService])
   }
 }
 
-// mix in Contexts for Activity
-class MainActivity extends Activity with Styles with Contexts[Activity] {
-  // prepare a variable to hold our text view
-  var cap = slot[TextView]
-
-  val service = RestAdapterFactory.get()
-  val ip = service.getMyIp
+class MainActivity extends Activity with Contexts[Activity] {
+  var output = slot[TextView]
+  lazy val service = RestAdapterFactory.get()
 
   override def onCreate(savedInstanceState: Bundle) = {
     super.onCreate(savedInstanceState)
-    // this will be a linear layout
 
     val view = l[LinearLayout](
-      // a text view
-      w[TextView] <~
-      // use our helper
-      caption("Howdy dit is een test") <~
-      // assign to cap
-      wire(cap),
+      l[LinearLayout](
+        w[Button] <~ text("Get My IP") <~ On.click {
+          output <~ search()
+        },
+        w[Button] <~ text("Change text with random") <~ On.click {
+          output <~ text(s"Changed text with random number: ${(Math.random() * 10).toInt}")
+        }
+      ),
+      l[ScrollView](
+        w[TextView] <~ wire(output)
+      )
+    ) <~ vertical
 
-    // a button
-    w[Button] <~
-      // set text
-      text("Click me!") <~
-      // set layout params (LinearLayout.LayoutParams will be used)
-      layoutParams[LinearLayout](MATCH_PARENT, WRAP_CONTENT) <~
-      // set click handler
-      On.click {
-        // with <~~ we can apply snails like `delay`
-        // tweaks coming after them will wait till they finish
-
-        cap <~ text("Button clicked!") <~~ delay(1000) <~ text(ip.origin)
-      }
-    ) <~
-      // match layout orientation to screen orientation
-      (portrait ? vertical | horizontal) <~ Transformer {
-        // here we set a padding of 4 dp for all inner views
-        case x: View ⇒ x <~ padding(all = 4 dp)
-      }
-
+    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS)
     setContentView(getUi(view))
+  }
+
+  def search(): Future[Tweak[TextView]] = {
+    setProgressBarIndeterminateVisibility(true)
+    Future {
+      Thread.sleep(4000)
+      service.getMyIp.origin
+    }.recover {
+      case exc: Throwable => exc.toString
+    }.mapUi { str =>
+      setProgressBarIndeterminateVisibility(false)
+      text(str)
+    }
   }
 }

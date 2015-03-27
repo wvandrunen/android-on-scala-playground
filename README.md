@@ -1,30 +1,46 @@
 scala-on-android playground
 ===========================
 
-*Android SDK Plugin* documentation: https://github.com/pfn/android-sdk-plugin
-*Macroid* documentation: http://macroid.github.io
+Stuff:
+- *Android SDK Plugin* documentation: https://github.com/pfn/android-sdk-plugin
+- *Macroid* documentation: http://macroid.github.io 
+- Execute REST API with Retrofit https://github.com/square/retrofit
+- Async executing with Futures & UiActions (http://macroid.github.io/guide/UiActions.html)
 
-Frameworks
-- View framework: Macroid
-- View framework: Scaloid
-- SBT plugin: android-sdk-plugin
-- RX.Scala gebruiken
+Running:
+- Make sure ANDROID_HOME & ANDROID_SDK_HOME are set SDK directory
+- Make sure local.properties point to SDK directory
+- sbt
+- android:run
+- ~android:run (for incremental)
 
-Tooling
-- Android Studio
-- IntelliJ wordt aangeraden
-- Correct zetten van ~/.android/avd vs ANDROID_SDK_HOME/.android/avd
-- gebruik local.properties -> SDK
+IDE:
+- Create link to ~/.android to SDK_HOME/.android (this fixes the tooling in IntelliJ)
+- IntelliJ for best Scala support
+    - To debug: 
+        -  Attach process after startup in IntelliJ and set breakpoints
+        -  Note: attach only possible after startup (so debug onCreate not possible)
+- Android Studio for best Android API support
+    - Deprecated Scala plugin needed
 
-Development
-- Workflow
-- Retrofit: http://stackoverflow.com/questions/24830891/retrofit-http-reporting-http-method-annotation-is-required-in-scala-code-on-an
-- Libs die scalaz gebruiken komen niet door Proguard heen...
-- Hoe toch standaard XML gebruiken voor Activities
+General findings:
+- use local.properties to point to the correct SDK
+- Scalaz runs in 65K+ methods error with Dex / Proguard
+- proguard
+    - proguard-sbt.txt is overwrite every buildcycle (so do not edit!)
+    - Options: make sure every config item is a oneliner
+        ```
+        "keepclasseswithmembers class * { @retrofit.http.* <methods>; }"  
+        ```
+        instead of
+        ```
+        "keepclasseswithmembers class * {",
+        "@retrofit.http.* <methods>; ",
+        "}"
+        ```
 
-Deployen
-- Scala lib installed in image? (https://github.com/svenwiegand/scala-libs-for-android-emulator) 
-
-Testen
-- RoboElectric i.c.m. Scala?
-
+Open:
+- checkout framework: Scaloid
+- checkout usage RX.Scala
+- checkout mixing layout XML with macroid
+- RoboElectric with Scala
