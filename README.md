@@ -9,7 +9,7 @@ Stuff:
 
 Running:
 - Make sure ANDROID_HOME & ANDROID_SDK_HOME are set SDK directory
-- Make sure local.properties point to SDK directory
+- Make sure local.properties points to SDK directory
 - sbt
 - android:run
 - ~android:run (for incremental)
@@ -29,15 +29,15 @@ General findings:
 - proguard
     - proguard-sbt.txt is overwrite every buildcycle (so do not edit!)
     - Options: make sure every config item is a oneliner
-        ```
-        "keepclasseswithmembers class * { @retrofit.http.* <methods>; }"  
-        ```
-        instead of
-        ```
-        "keepclasseswithmembers class * {",
-        "@retrofit.http.* <methods>; ",
-        "}"
-        ```
+    ```Scala
+    List("keepclasseswithmembers class * { @retrofit.http.* <methods>; }")
+    ```
+    instead of 
+    ```Scala
+    List("keepclasseswithmembers class * {",
+         "@retrofit.http.* <methods>; ",
+         "}")
+    ```
 
 Open:
 - checkout framework: Scaloid
