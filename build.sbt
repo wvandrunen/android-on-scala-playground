@@ -20,12 +20,13 @@ scalacOptions in (Compile, compile) ++=
   (dependencyClasspath in Compile).value.files.map("-P:wartremover:cp:" + _.toURI.toURL)
 
 scalacOptions in (Compile, compile) ++= Seq(
-  "-P:wartremover:traverser:macroid.warts.CheckUi"
+  "-P:wartremover:traverser:macroid.warts.CheckUi",
+  "-feature"
 )
 
 libraryDependencies ++= Seq(
   aar("org.macroid" %% "macroid" % "2.0.0-M3"),
-  aar("com.android.support" % "support-v4" % "20.0.0"),
+  aar("org.macroid" %% "macroid-viewable" % "2.0.0-M3"),
   "com.squareup.retrofit" % "retrofit" % "1.9.0",
   compilerPlugin("org.brianmckenna" %% "wartremover" % "0.10")
 )
@@ -36,6 +37,8 @@ proguardOptions in Android ++= Seq(
   "-ignorewarnings",
   "-keep class scala.Dynamic",
   "-keepattributes InnerClasses",
+  "-keep class macroid.** { *; }",
+  "-keep class com.example.** { *; }",
   "-dontwarn retrofit.**",
   "-keepattributes *Annotation*",
   "-keep class retrofit.** { *; }",

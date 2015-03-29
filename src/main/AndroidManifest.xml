@@ -15,7 +15,7 @@
 
         <activity
           android:label="Macroid Starter"
-          android:name=".MainActivity">
+          android:name="nl.q42.playground.views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
