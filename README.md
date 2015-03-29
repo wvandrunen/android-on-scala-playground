@@ -95,8 +95,8 @@ button.setOnClickListener(new OnClickListener {
     ```
 
 #Open points to investigate
-[ ] generic extension method for add event handlers without transformer / pattern matching code
-[ ] checkout framework: Scaloid
-[ ] checkout usage RX.Scala
-[ ] checkout mixing layout XML with macroid
-[ ] RoboElectric with Scala
+- [ ] generic extension method for add event handlers without transformer / pattern matching code
+- [ ] checkout framework: Scaloid
+- [ ] checkout usage RX.Scala
+- [ ] checkout mixing layout XML with macroid
+- [ ] RoboElectric with Scala
